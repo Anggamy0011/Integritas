@@ -77,6 +77,17 @@
             -webkit-backface-visibility: hidden;
             backface-visibility: hidden;
         }
+        
+        /* Responsive adjustments */
+        @media (max-width: 640px) {
+            .interactive-card {
+                height: 160px !important;
+            }
+            .card-back p {
+                font-size: 0.875rem;
+                line-height: 1.25rem;
+            }
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -107,15 +118,15 @@
                 
                 <div class="bg-white rounded-xl shadow-sm p-8">
                     <h3 class="text-2xl font-semibold text-center text-gray-800 mb-8">Mengapa Integritas Sangat Penting?</h3>
-                    <p class="text-center text-gray-500 mb-8">Integritas bukan hanya tentang moralitas, tetapi juga merupakan fondasi untuk kesuksesan dan hubungan yang sehat. Tekan pada setiap kartu untuk melihat dampak positif dari memiliki integritas yang kuat.</p>
+                    <p class="text-center text-gray-500 mb-8">Integritas bukan hanya tentang moralitas, tetapi juga merupakan fondasi untuk kesuksesan dan hubungan yang sehat.</p>
                     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <div class="interactive-card bg-[#FDFBF8] border border-gray-200 rounded-lg p-6 text-center" onclick="flipCard(this)">
+                        <div class="interactive-card bg-[#FDFBF8] border border-gray-200 rounded-lg p-6 text-center h-48" onclick="flipCard(this)">
                              <div class="card-inner relative w-full h-full">
                                 <div class="card-front absolute w-full h-full flex flex-col justify-center items-center">
                                     <div class="text-4xl mb-3">🤝</div>
                                     <h4 class="font-semibold text-lg text-gray-700">Membangun Kepercayaan</h4>
                                 </div>
-                                <div class="card-back absolute w-full h-full bg-[#FDFBF8] rounded-lg p-4 flex items-center justify-center">
+                                <div class="card-back absolute w-full h-full bg-[#FDFBF8] rounded-lg p-4 flex items-center justify-center text-center">
                                     <p class="text-gray-600 text-sm">Integritas adalah fondasi dari kepercayaan. Orang akan lebih percaya, mengandalkan, dan merasa aman saat berinteraksi dengan Anda.</p>
                                 </div>
                             </div>
@@ -174,8 +185,8 @@
                      <p class="max-w-3xl mx-auto text-gray-600">Integritas termanifestasi dalam perilaku sehari-hari. Berikut adalah ciri-ciri utama yang menandakan seseorang memiliki integritas yang kuat. Klik setiap kartu untuk refleksi singkat.</p>
                 </div>
                 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-                     <div class="interactive-card bg-white rounded-xl shadow-sm p-6" onclick="flipCard(this)">
-                        <div class="card-inner relative w-full h-40">
+                     <div class="interactive-card bg-white rounded-xl shadow-sm p-6 h-48" onclick="flipCard(this)">
+                        <div class="card-inner relative w-full h-full">
                             <div class="card-front absolute w-full h-full flex flex-col justify-center items-center text-center">
                                 <div class="text-4xl mb-2">✅</div><h4 class="font-semibold text-lg text-gray-700">Jujur</h4>
                             </div>
