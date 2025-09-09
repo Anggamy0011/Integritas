@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dasbor Interaktif - Membangun Integritas Diri</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: Aplikasi ini dirancang dengan struktur tematik non-linier, berbeda dari urutan slide aslinya. Tujuannya adalah untuk memungkinkan pengguna menjelajahi konsep integritas berdasarkan minat mereka. Strukturnya dibagi menjadi empat bagian utama yang dapat diakses melalui navigasi: 1) Konsep Dasar, 2) Ciri & Contoh, 3) Tantangan & Solusi, dan 4) Studi Kasus. Pendekatan ini menggunakan komponen interaktif seperti kartu yang dapat diklik dan tab untuk mengubah konten statis menjadi pengalaman yang menarik. Struktur ini dipilih karena lebih unggul dalam memfasilitasi pemahaman dan retensi dibandingkan format presentasi pasif, memungkinkan pengguna untuk fokus pada aspek yang paling relevan bagi mereka. -->
+    <!-- Visualization & Content Choices: Mengingat kontennya bersifat kualitatif, tidak ada visualisasi data (grafik) yang digunakan. Pilihan presentasi difokuskan pada elemen interaktif berbasis HTML/CSS dan JS. 1) 'Mengapa Penting', 'Ciri', 'Tantangan', dan 'Solusi' disajikan sebagai kartu interaktif (Goal: Inform/Organize, Interaction: Click to reveal details) untuk mendorong eksplorasi. 2) 'Contoh Sehari-hari' disajikan dalam format tab (Goal: Organize, Interaction: Click to switch context) untuk mengelompokkan informasi secara efisien. 3) 'Studi Kasus' disajikan sebagai narasi yang jelas (Goal: Inspire). Pemilihan ini memastikan konten yang padat menjadi mudah dicerna dan menarik tanpa menggunakan grafik SVG atau Mermaid. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8;
+            color: #4A4A4A;
+            background-image: url('Wings.png');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
+            background-size: contain;
+            position: relative;
+        }
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #FDFBF8;
+            opacity: 0.93;
+            z-index: -1;
+        }
+        .nav-button {
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-button.active {
+            border-bottom-color: #A57E5A;
+            color: #A57E5A;
+            font-weight: 600;
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        .interactive-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        .interactive-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .tab-button.active {
+            background-color: #A57E5A;
+            color: #FFFFFF;
+        }
+        .card-back {
+            display: none;
+            transform: rotateY(180deg);
+        }
+        .card-inner.is-flipped {
+            transform: rotateY(180deg);
+        }
+        .card-inner {
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .card-front, .card-back {
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-[#A57E5A] mb-2">Membangun Integritas Diri</h1>
+            <p class="text-lg md:text-xl text-gray-500">Kunci Sukses dalam Kehidupan Pribadi dan Profesional</p>
+        </header>
+
+        <nav class="flex justify-center border-b border-gray-200 mb-12">
+            <div class="flex flex-wrap justify-center space-x-4 sm:space-x-8">
+                <button class="nav-button active py-4 px-2 text-gray-600 hover:text-[#A57E5A]" data-target="konsep">Konsep Dasar</button>
+                <button class="nav-button py-4 px-2 text-gray-600 hover:text-[#A57E5A]" data-target="ciri">Ciri & Contoh</button>
+                <button class="nav-button py-4 px-2 text-gray-600 hover:text-[#A57E5A]" data-target="tantangan">Tantangan & Solusi</button>
+                <button class="nav-button py-4 px-2 text-gray-600 hover:text-[#A57E5A]" data-target="studi-kasus">Studi Kasus</button>
+            </div>
+        </nav>
+
+        <main>
+            <section id="konsep" class="content-section active">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">Apa Itu Integritas?</h2>
+                    <p class="max-w-3xl mx-auto text-gray-600">Integritas adalah konsistensi antara tindakan, nilai, dan prinsip. Secara sederhana, integritas adalah kesesuaian antara apa yang diucapkan dengan apa yang diperbuat, bahkan ketika tidak ada yang melihat.</p>
+                    <blockquote class="mt-4 italic text-gray-500">"Integritas adalah melakukan hal yang benar, bahkan ketika tidak ada yang melihat." - C.S. Lewis</blockquote>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-sm p-8">
+                    <h3 class="text-2xl font-semibold text-center text-gray-800 mb-8">Mengapa Integritas Sangat Penting?</h3>
+                    <p class="text-center text-gray-500 mb-8">Integritas bukan hanya tentang moralitas, tetapi juga merupakan fondasi untuk kesuksesan dan hubungan yang sehat. Tekan pada setiap kartu untuk melihat dampak positif dari memiliki integritas yang kuat.</p>
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="interactive-card bg-[#FDFBF8] border border-gray-200 rounded-lg p-6 text-center" onclick="flipCard(this)">
+                             <div class="card-inner relative w-full h-full">
+                                <div class="card-front absolute w-full h-full flex flex-col justify-center items-center">
+                                    <div class="text-4xl mb-3">🤝</div>
+                                    <h4 class="font-semibold text-lg text-gray-700">Membangun Kepercayaan</h4>
+                                </div>
+                                <div class="card-back absolute w-full h-full bg-[#FDFBF8] rounded-lg p-4 flex items-center justify-center">
+                                    <p class="text-gray-600 text-sm">Integritas adalah fondasi dari kepercayaan. Orang akan lebih percaya, mengandalkan, dan merasa aman saat berinteraksi dengan Anda.</p>
+                                </div>
+                            </div>
+                        </div>
+                         <div class="interactive-card bg-[#FDFBF8] border border-gray-200 rounded-lg p-6 text-center h-48" onclick="flipCard(this)">
+                             <div class="card-inner relative w-full h-full">
+                                <div class="card-front absolute w-full h-full flex flex-col justify-center items-center">
+                                    <div class="text-4xl mb-3">🌟</div>
+                                    <h4 class="font-semibold text-lg text-gray-700">Meningkatkan Reputasi</h4>
+                                </div>
+                                <div class="card-back absolute w-full h-full bg-[#FDFBF8] rounded-lg p-4 flex items-center justify-center">
+                                    <p class="text-gray-600 text-sm">Anda akan dikenal sebagai pribadi yang dapat diandalkan, baik secara personal maupun profesional, yang membuka banyak peluang.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="interactive-card bg-[#FDFBF8] border border-gray-200 rounded-lg p-6 text-center h-48" onclick="flipCard(this)">
+                             <div class="card-inner relative w-full h-full">
+                                <div class="card-front absolute w-full h-full flex flex-col justify-center items-center">
+                                    <div class="text-4xl mb-3">🧭</div>
+                                    <h4 class="font-semibold text-lg text-gray-700">Keputusan Lebih Baik</h4>
+                                </div>
+                                <div class="card-back absolute w-full h-full bg-[#FDFBF8] rounded-lg p-4 flex items-center justify-center">
+                                    <p class="text-gray-600 text-sm">Prinsip yang kuat akan memandu Anda untuk membuat keputusan yang benar, etis, dan konsisten, bahkan dalam situasi sulit.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="interactive-card bg-[#FDFBF8] border border-gray-200 rounded-lg p-6 text-center h-48" onclick="flipCard(this)">
+                             <div class="card-inner relative w-full h-full">
+                                <div class="card-front absolute w-full h-full flex flex-col justify-center items-center">
+                                    <div class="text-4xl mb-3">🧘</div>
+                                    <h4 class="font-semibold text-lg text-gray-700">Ketenangan Batin</h4>
+                                </div>
+                                <div class="card-back absolute w-full h-full bg-[#FDFBF8] rounded-lg p-4 flex items-center justify-center">
+                                    <p class="text-gray-600 text-sm">Hidup tanpa perlu menyembunyikan kebohongan atau kecurangan akan membuat hati dan pikiran jauh lebih tenang dan damai.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="interactive-card bg-[#FDFBF8] border border-gray-200 rounded-lg p-6 text-center h-48" onclick="flipCard(this)">
+                             <div class="card-inner relative w-full h-full">
+                                <div class="card-front absolute w-full h-full flex flex-col justify-center items-center">
+                                    <div class="text-4xl mb-3">❤️</div>
+                                    <h4 class="font-semibold text-lg text-gray-700">Hubungan yang Sehat</h4>
+                                </div>
+                                <div class="card-back absolute w-full h-full bg-[#FDFBF8] rounded-lg p-4 flex items-center justify-center">
+                                    <p class="text-gray-600 text-sm">Hubungan (pertemanan, keluarga, kerja) yang didasari kejujuran dan kepercayaan akan lebih kuat, sehat, dan langgeng.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ciri" class="content-section">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">Ciri Pribadi Berintegritas</h2>
+                     <p class="max-w-3xl mx-auto text-gray-600">Integritas termanifestasi dalam perilaku sehari-hari. Berikut adalah ciri-ciri utama yang menandakan seseorang memiliki integritas yang kuat. Klik setiap kartu untuk refleksi singkat.</p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+                     <div class="interactive-card bg-white rounded-xl shadow-sm p-6" onclick="flipCard(this)">
+                        <div class="card-inner relative w-full h-40">
+                            <div class="card-front absolute w-full h-full flex flex-col justify-center items-center text-center">
+                                <div class="text-4xl mb-2">✅</div><h4 class="font-semibold text-lg text-gray-700">Jujur</h4>
+                            </div>
+                            <div class="card-back absolute w-full h-full bg-white rounded-lg p-4 flex items-center justify-center text-center">
+                                <p class="text-gray-600 text-sm">Tulus dan transparan dalam perkataan dan perbuatan, tanpa ada yang ditutupi.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="interactive-card bg-white rounded-xl shadow-sm p-6" onclick="flipCard(this)">
+                        <div class="card-inner relative w-full h-40">
+                            <div class="card-front absolute w-full h-full flex flex-col justify-center items-center text-center">
+                                <div class="text-4xl mb-2">🔄</div><h4 class="font-semibold text-lg text-gray-700">Konsisten</h4>
+                            </div>
+                            <div class="card-back absolute w-full h-full bg-white rounded-lg p-4 flex items-center justify-center text-center">
+                                <p class="text-gray-600 text-sm">Tindakan selaras dengan nilai-nilai yang dianut secara terus-menerus, tidak berubah-ubah tergantung situasi.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="interactive-card bg-white rounded-xl shadow-sm p-6" onclick="flipCard(this)">
+                        <div class="card-inner relative w-full h-40">
+                            <div class="card-front absolute w-full h-full flex flex-col justify-center items-center text-center">
+                                <div class="text-4xl mb-2">🛡️</div><h4 class="font-semibold text-lg text-gray-700">Bertanggung Jawab</h4>
+                            </div>
+                            <div class="card-back absolute w-full h-full bg-white rounded-lg p-4 flex items-center justify-center text-center">
+                                <p class="text-gray-600 text-sm">Mengakui kesalahan dan siap menanggung konsekuensi dari setiap tindakan tanpa menyalahkan orang lain.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="interactive-card bg-white rounded-xl shadow-sm p-6" onclick="flipCard(this)">
+                        <div class="card-inner relative w-full h-40">
+                            <div class="card-front absolute w-full h-full flex flex-col justify-center items-center text-center">
+                                <div class="text-4xl mb-2">🗣️</div><h4 class="font-semibold text-lg text-gray-700">Menepati Janji</h4>
+                            </div>
+                            <div class="card-back absolute w-full h-full bg-white rounded-lg p-4 flex items-center justify-center text-center">
+                                <p class="text-gray-600 text-sm">Memegang teguh komitmen dan janji yang telah dibuat, sekecil apa pun itu.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="interactive-card bg-white rounded-xl shadow-sm p-6" onclick="flipCard(this)">
+                        <div class="card-inner relative w-full h-40">
+                            <div class="card-front absolute w-full h-full flex flex-col justify-center items-center text-center">
+                                <div class="text-4xl mb-2">💪</div><h4 class="font-semibold text-lg text-gray-700">Berprinsip Kuat</h4>
+                            </div>
+                            <div class="card-back absolute w-full h-full bg-white rounded-lg p-4 flex items-center justify-center text-center">
+                                <p class="text-gray-600 text-sm">Berani mengatakan "tidak" pada hal-hal yang bertentangan dengan nilai-nilai kebenaran, walau ada tekanan.</p>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="interactive-card bg-white rounded-xl shadow-sm p-6" onclick="flipCard(this)">
+                        <div class="card-inner relative w-full h-40">
+                            <div class="card-front absolute w-full h-full flex flex-col justify-center items-center text-center">
+                                <div class="text-4xl mb-2">⚖️</div><h4 class="font-semibold text-lg text-gray-700">Adil</h4>
+                            </div>
+                            <div class="card-back absolute w-full h-full bg-white rounded-lg p-4 flex items-center justify-center text-center">
+                                <p class="text-gray-600 text-sm">Memperlakukan semua orang dengan setara dan hormat tanpa memandang latar belakang atau status.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm p-8">
+                     <h3 class="text-2xl font-semibold text-center text-gray-800 mb-8">Contoh dalam Kehidupan Sehari-hari</h3>
+                     <div id="tabs-container" class="flex flex-wrap justify-center gap-2 mb-6">
+                        <button class="tab-button active py-2 px-4 rounded-full bg-gray-200 text-gray-700 text-sm" data-target="kerja">Di Tempat Kerja</button>
+                        <button class="tab-button py-2 px-4 rounded-full bg-gray-200 text-gray-700 text-sm" data-target="masyarakat">Di Masyarakat</button>
+                    </div>
+                    <div id="tabs-content" class="bg-gray-50 p-6 rounded-lg min-h-[150px]">
+                        <div id="kerja-content" class="tab-content">
+                            <ul class="list-disc list-inside text-gray-600 space-y-2">
+                                <li>Datang dan pulang kerja tepat waktu.</li>
+                                <li>Tidak menyalahgunakan fasilitas kantor untuk kepentingan pribadi.</li>
+                                <li>Jujur dalam membuat laporan.</li>
+                            </ul>
+                        </div>
+                         <div id="masyarakat-content" class="tab-content hidden">
+                            <ul class="list-disc list-inside text-gray-600 space-y-2">
+                                <li>Menaati peraturan lalu lintas.</li>
+                                <li>Tidak menyebarkan berita bohong (hoaks).</li>
+                                <li>Menjaga kebersihan lingkungan.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="tantangan" class="content-section">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">Menghadapi Tantangan, Membangun Kebiasaan</h2>
+                    <p class="max-w-3xl mx-auto text-gray-600">Menjaga integritas tidak selalu mudah. Ada banyak tantangan yang bisa menggoyahkan prinsip. Namun, dengan mengenali tantangan tersebut, kita bisa membangun strategi dan kebiasaan untuk mengatasinya.</p>
+                </div>
+                <div class="grid lg:grid-cols-2 gap-10">
+                    <div class="bg-white rounded-xl shadow-sm p-8">
+                        <h3 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center justify-center"><span class="text-3xl mr-3">🌪️</span> Tantangan Umum</h3>
+                        <ul class="space-y-4">
+                            <li class="p-4 bg-gray-50 rounded-lg"><strong>Tekanan Lingkungan:</strong> Ajakan dari teman atau rekan untuk melakukan hal yang tidak benar.</li>
+                            <li class="p-4 bg-gray-50 rounded-lg"><strong>Keinginan Hasil Instan:</strong> Godaan untuk mengambil jalan pintas yang curang demi mencapai tujuan.</li>
+                            <li class="p-4 bg-gray-50 rounded-lg"><strong>Takut Konsekuensi:</strong> Enggan mengakui kesalahan karena takut dihukum atau mendapat citra buruk.</li>
+                             <li class="p-4 bg-gray-50 rounded-lg"><strong>Kurangnya Teladan:</strong> Sulit menemukan contoh nyata figur berintegritas di sekitar kita.</li>
+                            <li class="p-4 bg-gray-50 rounded-lg"><strong>Kepentingan Pribadi:</strong> Mendahulukan keuntungan pribadi di atas prinsip kebenaran.</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-sm p-8">
+                        <h3 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center justify-center"><span class="text-3xl mr-3">🛠️</span> Cara Membangun Integritas</h3>
+                         <ul class="space-y-4">
+                            <li class="p-4 bg-gray-50 rounded-lg"><strong>Kenali & Tetapkan Nilai:</strong> Tentukan prinsip hidup Anda (kejujuran, tanggung jawab, dll) sebagai panduan.</li>
+                             <li class="p-4 bg-gray-50 rounded-lg"><strong>Mulai dari Hal Kecil:</strong> Latih kejujuran dalam hal sepele, seperti mengembalikan kembalian yang berlebih.</li>
+                             <li class="p-4 bg-gray-50 rounded-lg"><strong>Berpikir Sebelum Bertindak:</strong> Selalu tanyakan, "Apakah tindakan ini sesuai dengan nilai-nilai saya?"</li>
+                            <li class="p-4 bg-gray-50 rounded-lg"><strong>Pilih Lingkungan yang Mendukung:</strong> Bergaul dengan orang-orang yang juga menjunjung tinggi integritas.</li>
+                            <li class="p-4 bg-gray-50 rounded-lg"><strong>Jadilah Orang Terpercaya:</strong> Tepati janji dan komitmen sekecil apa pun untuk membangun kebiasaan.</li>
+                            <li class="p-4 bg-gray-50 rounded-lg"><strong>Belajar dari Kesalahan:</strong> Jika berbuat salah, akui, perbaiki, dan jadikan pelajaran berharga.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="studi-kasus" class="content-section">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">Studi Kasus: Teladan Integritas</h2>
+                    <p class="max-w-3xl mx-auto text-gray-600">Salah satu cara terbaik belajar integritas adalah melalui teladan nyata. Kisah hidup individu berintegritas tinggi dapat memberikan inspirasi dan bukti bahwa integritas dapat dipegang teguh dalam situasi apa pun.</p>
+                </div>
+                <div class="bg-white rounded-xl shadow-sm p-8 max-w-4xl mx-auto">
+                    <div class="flex flex-col md:flex-row items-center">
+                        <div class="md:w-1/3 text-center mb-6 md:mb-0">
+                            <div class="w-32 h-32 mx-auto overflow-hidden rounded-full">
+                                <img src="Hoegeng.jpg" alt="Hoegeng Iman Santoso" class="w-full h-full object-cover">
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-800 mt-4">Hoegeng Iman Santoso</h3>
+                            <p class="text-gray-500">Mantan Kapolri</p>
+                        </div>
+                        <div class="md:w-2/3 md:pl-8">
+                             <p class="text-gray-600 mb-6">Jenderal Hoegeng dikenang sebagai polisi paling jujur dalam sejarah Indonesia. Integritasnya menjadi legenda dan teladan abadi. Beberapa contoh nyata dari prinsip hidupnya:</p>
+                            <ul class="space-y-3">
+                                <li class="flex items-start"><span class="text-[#A57E5A] mr-3 mt-1">▶</span>Menolak berbagai suap dan fasilitas mewah yang tidak sesuai dengan haknya.</li>
+                                <li class="flex items-start"><span class="text-[#A57E5A] mr-3 mt-1">▶</span>Meminta istrinya menutup toko bunga agar tidak terjadi konflik kepentingan dengan jabatannya sebagai pejabat publik.</li>
+                                <li class="flex items-start"><span class="text-[#A57E5A] mr-3 mt-1">▶</span>Hidup dalam kesederhanaan jauh dari kemewahan, bahkan setelah pensiun.</li>
+                            </ul>
+                            <p class="mt-6 font-semibold text-gray-700 italic">"Kisahnya mengajarkan bahwa jabatan dan kekuasaan tidak seharusnya menggoyahkan prinsip kebenaran."</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <footer class="text-center mt-16 border-t pt-8">
+            <h3 class="text-xl font-semibold text-gray-700 mb-2">Integritas Adalah Pilihan</h3>
+            <p class="max-w-2xl mx-auto text-gray-500">Integritas bukanlah bakat, melainkan sebuah pilihan dan kebiasaan yang harus dilatih terus-menerus. Mari mulai membangunnya dari diri sendiri, dari hal kecil, dan dari sekarang.</p>
+        </footer>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const navButtons = document.querySelectorAll('.nav-button');
+            const contentSections = document.querySelectorAll('.content-section');
+
+            navButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const target = button.getAttribute('data-target');
+
+                    navButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+
+                    contentSections.forEach(section => {
+                        if (section.id === target) {
+                            section.classList.add('active');
+                        } else {
+                            section.classList.remove('active');
+                        }
+                    });
+                });
+            });
+
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const target = button.getAttribute('data-target');
+
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+
+                    tabContents.forEach(content => {
+                        if (content.id === `${target}-content`) {
+                            content.classList.remove('hidden');
+                        } else {
+                            content.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+        });
+        
+        function flipCard(cardElement) {
+            const cardInner = cardElement.querySelector('.card-inner');
+            const allCards = document.querySelectorAll('.card-inner');
+            
+            // Jika kartu yang diklik sedang terbuka, tutup saja
+            if (cardInner.classList.contains('is-flipped')) {
+                cardInner.classList.remove('is-flipped');
+                return;
+            }
+            
+            // Tutup semua kartu yang terbuka
+            allCards.forEach(card => {
+                if (card !== cardInner) {
+                    card.classList.remove('is-flipped');
+                }
+            });
+            
+            // Buka kartu yang diklik
+            cardInner.classList.add('is-flipped');
+        }
+    </script>
+</body>
+</html>
